@@ -2,6 +2,7 @@
 import { useTheme } from "./theme-context";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FaLinkedin, FaInstagram } from "react-icons/fa";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -86,18 +87,25 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center min-h-[60vh] py-12 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">Dr. [Her Name]</h1>
+        <h1 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">Zainab Najmi</h1>
         <p className="text-xl sm:text-2xl mb-2 font-light">Helping You Heal, Grow, and Thrive</p>
         <span className="text-base sm:text-lg text-blue-700 dark:text-blue-300 mb-8">Psychologist | Mental Wellness Expert | Therapy That Listens</span>
       </section>
 
       {/* About Me Section */}
       <section className="flex flex-col sm:flex-row items-center justify-center gap-8 py-8 px-4 max-w-3xl mx-auto bg-white/80 dark:bg-[#23243a]/80 rounded-xl shadow-md">
-        <img src="/profile-placeholder.jpg" alt="Profile" className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900" />
+        <Image
+          src="/zain.jpeg"
+          alt="Profile"
+          width={128}
+          height={128}
+          className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900"
+          priority
+        />
         <div className="text-left">
           <h2 className="text-2xl font-semibold mb-2">About Me</h2>
-          <p className="mb-2 text-base">I am a passionate psychologist with over 10 years of experience helping individuals find balance, healing, and growth. My approach is warm, empathetic, and client-centered. [Placeholder bio]</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">PhD in Clinical Psychology | 10+ Years Experience</p>
+          <p className="mb-2 text-base">I am a passionate psychologist with over 7 years of experience helping individuals find balance, healing, and growth. My approach is warm, empathetic, and client-centered.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">PhD in Clinical Psychology | 7 Years Experience</p>
         </div>
       </section>
 
@@ -116,7 +124,7 @@ export default function Home() {
       {/* Her Approach Section */}
       <section className="py-12 px-4 max-w-3xl mx-auto text-center">
         <h2 className="text-2xl font-semibold mb-4">Why Therapy?</h2>
-        <p className="text-base mb-2">My approach is client-centered, empathetic, and confidential. I believe in creating a safe space for you to share, heal, and grow at your own pace. [Placeholder approach]</p>
+        <p className="text-base mb-2">My approach is client-centered, empathetic, and confidential. I believe in creating a safe space for you to share, heal, and grow at your own pace.</p>
       </section>
 
       {/* Book a Session Section */}
@@ -130,14 +138,14 @@ export default function Home() {
             value={form.name}
             onChange={handleChange}
             required
-            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a]"
+            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300"
           />
           <div className="w-full max-w-md flex gap-2">
             <select
               name="countryCode"
               value={form.countryCode || "+91"}
               onChange={handleChange}
-              className="rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-2 bg-white dark:bg-[#23243a] text-sm"
+              className="rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-2 bg-white dark:bg-[#23243a] text-sm placeholder-gray-400 dark:placeholder-gray-300"
               required
             >
               <option value="+91">🇮🇳 +91</option>
@@ -155,7 +163,7 @@ export default function Home() {
               onChange={handleChange}
               required
               pattern="[0-9]{7,15}"
-              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a]"
+              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300"
             />
           </div>
           {/* <input
@@ -174,45 +182,32 @@ export default function Home() {
             value={form.message}
             onChange={handleChange}
             required
-            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a]"
+            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300"
             rows={4}
           />
           <div className="w-full max-w-md flex flex-col gap-2">
             <label className="text-left font-medium mb-1">Comfortable Language(s):</label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  name="languages"
-                  value="Hindi"
-                  checked={form.languages.includes("Hindi")}
-                  onChange={handleChange}
-                  className="accent-blue-600"
-                />
-                Hindi
-              </label>
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  name="languages"
-                  value="English"
-                  checked={form.languages.includes("English")}
-                  onChange={handleChange}
-                  className="accent-blue-600"
-                />
-                English
-              </label>
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  name="languages"
-                  value="Lisan"
-                  checked={form.languages.includes("Lisan")}
-                  onChange={handleChange}
-                  className="accent-blue-600"
-                />
-                Lisan
-              </label>
+              {[
+                { label: "Hindi", value: "Hindi", color: "bg-yellow-100 dark:bg-yellow-900" },
+                { label: "English", value: "English", color: "bg-blue-100 dark:bg-blue-900" },
+                { label: "Lisan", value: "Lisan", color: "bg-green-100 dark:bg-green-900" },
+              ].map(({ label, value, color }) => (
+                <label
+                  key={value}
+                  className={`flex items-center gap-2 px-3 py-1 rounded-lg cursor-pointer shadow-sm transition-all border border-gray-200 dark:border-gray-700 ${color} hover:scale-105`}
+                >
+                  <input
+                    type="checkbox"
+                    name="languages"
+                    value={value}
+                    checked={form.languages.includes(value)}
+                    onChange={handleChange}
+                    className="accent-blue-600 w-4 h-4"
+                  />
+                  <span className="font-medium">{label}</span>
+                </label>
+              ))}
             </div>
           </div>
           <button type="submit" className="bg-blue-600 text-white rounded-lg px-6 py-2 font-medium hover:bg-blue-700 transition">
@@ -255,10 +250,26 @@ export default function Home() {
       {/* Footer Section */}
       <footer className="w-full py-6 flex flex-col items-center gap-2 bg-white/80 dark:bg-[#23243a]/80 mt-8">
         <div className="flex gap-4 mb-2">
-          <a href="https://linkedin.com/" target="_blank" rel="noopener" className="hover:underline text-blue-700 dark:text-blue-300">LinkedIn</a>
-          <a href="https://instagram.com/" target="_blank" rel="noopener" className="hover:underline text-pink-600 dark:text-pink-400">Instagram</a>
+          <a
+            href="https://www.linkedin.com/in/zainab-najmi-3936b116a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+            target="_blank"
+            rel="noopener"
+            className="hover:scale-110 transition-transform"
+            aria-label="LinkedIn"
+          >
+            <FaLinkedin className="w-6 h-6 text-blue-700 dark:text-blue-300" />
+          </a>
+          <a
+            href="https://instagram.com/healthymind_14"
+            target="_blank"
+            rel="noopener"
+            className="hover:scale-110 transition-transform"
+            aria-label="Instagram"
+          >
+            <FaInstagram className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+          </a>
         </div>
-        <span className="text-xs text-gray-500">© {new Date().getFullYear()} Dr. [Her Name]. All rights reserved.</span>
+        <span className="text-xs text-gray-500">© {new Date().getFullYear()} Zainab Najmi. All rights reserved.</span>
       </footer>
     </div>
   );

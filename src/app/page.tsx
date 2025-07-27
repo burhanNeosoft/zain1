@@ -24,8 +24,9 @@ export default function Home() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
     if (type === "checkbox" && name === "languages") {
+      const checked = (e.target as HTMLInputElement).checked;
       setForm((prev) => ({
         ...prev,
         languages: checked

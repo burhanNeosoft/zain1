@@ -238,7 +238,7 @@ export default function Home() {
             <div className="bg-white dark:bg-[#23243a] rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
               <h3 className="text-lg font-semibold mb-2">Feature Under Development</h3>
               <p className="mb-4 text-gray-700 dark:text-gray-300">
-                The "Schedule a Call" feature is coming soon!
+                The {"Schedule a Call"} feature is coming soon!
               </p>
               <button
                 onClick={() => setShowPopup(false)}

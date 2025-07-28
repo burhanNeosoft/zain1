@@ -138,27 +138,43 @@ export default function Home() {
       </section>
 
       {/* About Me Section */}
-      <section className="flex flex-col sm:flex-row items-center justify-center gap-8 py-8 px-4 max-w-3xl mx-auto bg-white/80 dark:bg-[#23243a]/80 rounded-xl shadow-md">
+      <section
+        className="relative flex flex-col sm:flex-row items-center justify-center gap-8 py-10 px-6 max-w-3xl mx-auto
+          bg-gradient-to-br from-white via-blue-50 to-blue-100 dark:from-[#23243a] dark:via-[#23243a] dark:to-[#18181c]
+          rounded-2xl shadow-xl border-l-8 border-blue-200 dark:border-blue-800 animate-fade-in"
+      >
+        {/* Decorative quote icon */}
+        <span className="absolute -top-6 left-6 text-5xl text-blue-200 dark:text-blue-900 opacity-60 select-none pointer-events-none">
+          &ldquo;
+        </span>
         <Image
           src="/zain.jpeg"
           alt="Profile"
           width={128}
           height={128}
-          className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900"
+          className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900 shadow-lg"
           priority
         />
-        <div className="text-left">
-          <h2 className="text-2xl font-semibold mb-2">About Me</h2>
-          <p className="mb-2 text-base">
-            I believe that &#39;Every Emotion is Important&#39; and my aim is to
-            put my client&#39;s needs first in order to fully support them on
-            their well-being journey. I come with significant experience in
-            counselling adults across a wide range of mental health concerns from
-            various cultural backgrounds. I am also an ABA therapist and certified
-            in hypnosis and graphology.
+        <div className="text-left flex-1">
+          <h2 className="text-3xl font-bold mb-2 text-blue-700 dark:text-blue-300">
+            About Me
+          </h2>
+          <p className="mb-3 text-base leading-relaxed text-gray-700 dark:text-gray-200">
+            I believe that{" "}
+            <span className="font-semibold text-blue-600 dark:text-blue-300">
+              &quot;Every Emotion is Important&quot;
+            </span>{" "}
+            and my aim is to put my client&#39;s needs first in order to fully
+            support them on their well-being journey. I come with significant
+            experience in counselling adults across a wide range of mental health
+            concerns from various cultural backgrounds. I am also an{" "}
+            <span className="font-semibold text-blue-600 dark:text-blue-300">
+              ABA therapist
+            </span>{" "}
+            and certified in hypnosis and graphology.
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            M.A. in Clinical Psychology | 7 Years Experience
+          <p className="text-sm text-blue-600 dark:text-blue-300 font-medium">
+            M.A. in Clinical Psychology &bull; 7 Years Experience
           </p>
         </div>
       </section>
@@ -226,20 +242,71 @@ export default function Home() {
       </section>
 
       {/* Her Approach Section */}
-      <section className="py-12 px-4 max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl font-semibold mb-4">Why Therapy?</h2>
-        <p className="text-base mb-2">
-          My approach is client-centered, empathetic, and confidential. I believe
-          in creating a safe space for you to share, heal, and grow at your own
-          pace.
+      <section className="py-12 px-4 max-w-3xl mx-auto text-center relative">
+        {/* Decorative background blur */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 flex justify-center items-center"
+        >
+          <div className="w-72 h-72 bg-blue-200/40 dark:bg-blue-900/30 rounded-full blur-3xl mx-auto"></div>
+        </div>
+        <h2 className="text-2xl font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center justify-center gap-2">
+          <span className="text-3xl">🧠</span> Why Therapy?
+        </h2>
+        <p className="text-lg mb-4 text-gray-700 dark:text-gray-200 font-medium max-w-2xl mx-auto">
+          My approach is{" "}
+          <span className="text-blue-600 dark:text-blue-300 font-semibold">
+            client-centered
+          </span>
+          ,{" "}
+          <span className="text-blue-600 dark:text-blue-300 font-semibold">
+            empathetic
+          </span>
+          , and{" "}
+          <span className="text-blue-600 dark:text-blue-300 font-semibold">
+            confidential
+          </span>
+          .
         </p>
+        <p className="text-base text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+          I believe in creating a{" "}
+          <span className="italic">safe space</span> for you to share, heal, and
+          grow at your own pace. Every journey is unique, and together we’ll find
+          the path that feels right for you.
+        </p>
+        <div className="flex justify-center gap-4 mt-6">
+          <span className="inline-block px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 text-sm font-semibold shadow-sm">
+            Empathy
+          </span>
+          <span className="inline-block px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 text-sm font-semibold shadow-sm">
+            Confidentiality
+          </span>
+          <span className="inline-block px-4 py-2 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 text-sm font-semibold shadow-sm">
+            Support
+          </span>
+        </div>
       </section>
 
       {/* Book a Session Section */}
-      <section id="book-session" className="py-12 px-4 max-w-2xl mx-auto text-center">
-        <h2 className="text-2xl font-semibold mb-4">Book a Session</h2>
+      <section
+        id="book-session"
+        className="py-14 px-4 max-w-2xl mx-auto text-center relative"
+      >
+        {/* Decorative blurred background */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 flex justify-center items-center"
+        >
+          <div className="w-80 h-80 bg-blue-200/40 dark:bg-blue-900/30 rounded-full blur-3xl mx-auto"></div>
+        </div>
+        <h2 className="text-3xl font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center justify-center gap-2">
+          <span className="text-2xl">📅</span> Book a Session
+        </h2>
+        <p className="mb-8 text-gray-600 dark:text-gray-300 text-base max-w-lg mx-auto">
+          Ready to take the next step? Fill out the form below and I’ll get back to you as soon as possible.
+        </p>
         <form
-          className="flex flex-col gap-4 items-center"
+          className="flex flex-col gap-4 items-center bg-white/80 dark:bg-[#18181c]/80 rounded-2xl shadow-lg p-6 border border-blue-100 dark:border-blue-900 backdrop-blur"
           onSubmit={handleSubmit}
         >
           <input
@@ -249,14 +316,14 @@ export default function Home() {
             value={form.name}
             onChange={handleChange}
             required
-            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300"
+            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition"
           />
           <div className="w-full max-w-md flex gap-2">
             <select
               name="countryCode"
               value={form.countryCode || "+91"}
               onChange={handleChange}
-              className="w-[50%] rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-2 bg-white dark:bg-[#23243a] text-sm placeholder-gray-400 dark:placeholder-gray-300"
+              className="w-[50%] rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-2 bg-white dark:bg-[#23243a] text-sm placeholder-gray-400 dark:placeholder-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition"
               required
             >
               <option value="+91">🇮🇳 India (+91)</option>
@@ -293,24 +360,7 @@ export default function Home() {
               <option value="+60">🇲🇾 Malaysia (+60)</option>
               <option value="+66">🇹🇭 Thailand (+66)</option>
               <option value="+52">🇲🇽 Mexico (+52)</option>
-              <option value="+1-876">🇯🇲 Jamaica (+1-876)</option>
-              <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
-              <option value="+1-868">🇹🇹 Trinidad & Tobago (+1-868)</option>
-              <option value="+1-784">🇻🇨 St. Vincent (+1-784)</option>
-              <option value="+1-758">🇱🇨 St. Lucia (+1-758)</option>
-              <option value="+1-721">🇸🇽 Sint Maarten (+1-721)</option>
-              <option value="+1-242">🇧🇸 Bahamas (+1-242)</option>
-              <option value="+1-246">🇧🇧 Barbados (+1-246)</option>
-              <option value="+1-441">🇧🇲 Bermuda (+1-441)</option>
-              <option value="+1-473">🇬🇩 Grenada (+1-473)</option>
-              <option value="+1-664">🇲🇸 Montserrat (+1-664)</option>
-              <option value="+1-869">🇰🇳 St. Kitts & Nevis (+1-869)</option>
-              <option value="+1-345">🇰🇾 Cayman Islands (+1-345)</option>
-              <option value="+1-649">🇹🇨 Turks & Caicos (+1-649)</option>
-              <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
-              <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
-              <option value="+1-868">🇹🇹 Trinidad & Tobago (+1-868)</option>
-              {/* Add more as needed */}
+              {/* ...add more as needed... */}
             </select>
             <input
               type="tel"
@@ -320,7 +370,7 @@ export default function Home() {
               onChange={handleChange}
               required
               pattern="[0-9]{7,15}"
-              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300"
+              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition"
             />
           </div>
           {/* <input
@@ -330,16 +380,15 @@ export default function Home() {
             value={form.email}
             onChange={handleChange}
             required
-            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a]"
+            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition"
           /> */}
-
           <textarea
             name="message"
             placeholder="Your Message"
             value={form.message}
             onChange={handleChange}
             required
-            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300"
+            className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a] placeholder-gray-400 dark:placeholder-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition"
             rows={4}
           />
           <div className="w-full max-w-md flex flex-col gap-2">
@@ -383,13 +432,13 @@ export default function Home() {
           </div>
           <button
             type="submit"
-            className="bg-blue-600 text-white rounded-lg px-6 py-2 font-medium hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white rounded-lg px-6 py-2 font-medium hover:bg-blue-700 transition focus:ring-2 focus:ring-blue-400"
           >
             {status === "loading" ? "Sending..." : "Send Message"}
           </button>
           {status === "success" && (
             <p className="text-green-600 mt-2">
-              Message sent!. Will get back to you shortly
+              Message sent! Will get back to you shortly.
             </p>
           )}
           {status === "error" && (

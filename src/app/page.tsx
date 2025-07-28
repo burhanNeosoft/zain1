@@ -86,10 +86,55 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-[60vh] py-12 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">Zainab Najmi</h1>
-        <p className="text-xl sm:text-2xl mb-2 font-light">Helping You Heal, Grow, and Thrive</p>
-        <span className="text-base sm:text-lg text-blue-700 dark:text-blue-300 mb-8">Psychologist | Mental Wellness Expert | Therapy That Listens</span>
+      <section className="relative flex flex-col items-center justify-center min-h-[70vh] py-16 text-center overflow-hidden">
+        {/* Soft animated gradient background */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-0 bg-gradient-to-br from-blue-100 via-white to-blue-200 dark:from-[#23243a] dark:via-[#18181c] dark:to-[#23243a] opacity-80 animate-gradient-move"
+        />
+        {/* Decorative blurred circle */}
+        <div
+          aria-hidden
+          className="absolute -top-24 -left-24 w-96 h-96 bg-blue-300/30 dark:bg-blue-900/30 rounded-full blur-3xl z-0"
+        />
+        <div className="relative z-10 flex flex-col items-center">
+          <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 tracking-tight bg-gradient-to-r from-blue-700 via-blue-400 to-blue-700 dark:from-blue-300 dark:via-blue-500 dark:to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
+            Zainab Najmi
+          </h1>
+          <p className="text-2xl sm:text-3xl mb-4 font-light text-gray-700 dark:text-gray-200 max-w-2xl mx-auto">
+            Helping You{" "}
+            <span className="font-semibold text-blue-600 dark:text-blue-300">
+              Heal
+            </span>
+            ,{" "}
+            <span className="font-semibold text-blue-600 dark:text-blue-300">
+              Grow
+            </span>
+            , and{" "}
+            <span className="font-semibold text-blue-600 dark:text-blue-300">
+              Thrive
+            </span>
+          </p>
+          <span className="p-5 text-lg sm:text-xl text-blue-700 dark:text-blue-300 mb-8 block">
+            Psychologist | Mental Wellness Expert | Therapy That Listens
+          </span>
+          {/* Call to Action */}
+          <a
+            href="#book-session"
+            className="inline-block mt-4 px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-semibold text-lg shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Book a Session
+          </a>
+          {/* Animated scroll down indicator */}
+          <div className="mt-12 flex flex-col items-center animate-bounce">
+            <span className="text-blue-600 dark:text-blue-300 text-3xl">
+              &#8595;
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Scroll Down
+            </span>
+          </div>
+        </div>
       </section>
 
       {/* About Me Section */}
@@ -104,18 +149,77 @@ export default function Home() {
         />
         <div className="text-left">
           <h2 className="text-2xl font-semibold mb-2">About Me</h2>
-          <p className="mb-2 text-base">I am a passionate psychologist with over 7 years of experience helping individuals find balance, healing, and growth. My approach is warm, empathetic, and client-centered.</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">PhD in Clinical Psychology | 7 Years Experience</p>
+          <p className="mb-2 text-base">
+            I believe that &#39;Every Emotion is Important&#39; and my aim is to
+            put my client&#39;s needs first in order to fully support them on
+            their well-being journey. I come with significant experience in
+            counselling adults across a wide range of mental health concerns from
+            various cultural backgrounds. I am also an ABA therapist and certified
+            in hypnosis and graphology.
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            M.A. in Clinical Psychology | 7 Years Experience
+          </p>
         </div>
       </section>
 
       {/* Fields of Expertise Section */}
       <section className="py-12 px-4 max-w-5xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Fields of Expertise</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {['Anxiety', 'Depression', 'Relationship Therapy', 'Adolescent Psychology', 'CBT', 'Mindfulness'].map((field) => (
-            <div key={field} className="bg-white dark:bg-[#23243a] rounded-xl shadow-sm p-6 text-center transition-all hover:scale-[1.03] hover:shadow-lg cursor-pointer">
-              <span className="text-lg font-medium">{field}</span>
+        <h2 className="text-2xl font-semibold mb-8 text-center">
+          Fields of Expertise
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {[
+            {
+              label: "Depression",
+              icon: "🫶",
+              color:
+                "from-pink-100 to-pink-200 dark:from-pink-900 dark:to-pink-800",
+            },
+            {
+              label: "Anxiety",
+              icon: "🌱",
+              color:
+                "from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800",
+            },
+            {
+              label: "Stress",
+              icon: "💆‍♀️",
+              color:
+                "from-yellow-100 to-yellow-200 dark:from-yellow-900 dark:to-yellow-800",
+            },
+            {
+              label: "Relationship Issues",
+              icon: "💞",
+              color:
+                "from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800",
+            },
+            {
+              label: "Adolescent Psychology",
+              icon: "🧒",
+              color:
+                "from-green-100 to-green-200 dark:from-green-900 dark:to-green-800",
+            },
+            {
+              label: "OCD",
+              icon: "🔄",
+              color:
+                "from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700",
+            },
+          ].map(({ label, icon, color }) => (
+            <div
+              key={label}
+              className={`
+                rounded-2xl shadow-md p-8 flex flex-col items-center justify-center text-center
+                bg-gradient-to-br ${color}
+                transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer group
+              `}
+            >
+              <span className="text-4xl mb-4 transition-transform group-hover:scale-125">
+                {icon}
+              </span>
+              <span className="text-lg font-semibold mb-2">{label}</span>
+              <span className="block h-1 w-8 bg-blue-400 dark:bg-blue-600 rounded-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
             </div>
           ))}
         </div>
@@ -124,13 +228,20 @@ export default function Home() {
       {/* Her Approach Section */}
       <section className="py-12 px-4 max-w-3xl mx-auto text-center">
         <h2 className="text-2xl font-semibold mb-4">Why Therapy?</h2>
-        <p className="text-base mb-2">My approach is client-centered, empathetic, and confidential. I believe in creating a safe space for you to share, heal, and grow at your own pace.</p>
+        <p className="text-base mb-2">
+          My approach is client-centered, empathetic, and confidential. I believe
+          in creating a safe space for you to share, heal, and grow at your own
+          pace.
+        </p>
       </section>
 
       {/* Book a Session Section */}
-      <section className="py-12 px-4 max-w-2xl mx-auto text-center">
+      <section id="book-session" className="py-12 px-4 max-w-2xl mx-auto text-center">
         <h2 className="text-2xl font-semibold mb-4">Book a Session</h2>
-        <form className="flex flex-col gap-4 items-center" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col gap-4 items-center"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             name="name"
@@ -145,15 +256,61 @@ export default function Home() {
               name="countryCode"
               value={form.countryCode || "+91"}
               onChange={handleChange}
-              className="rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-2 bg-white dark:bg-[#23243a] text-sm placeholder-gray-400 dark:placeholder-gray-300"
+              className="w-[50%] rounded-lg border border-gray-300 dark:border-gray-700 px-2 py-2 bg-white dark:bg-[#23243a] text-sm placeholder-gray-400 dark:placeholder-gray-300"
               required
             >
-              <option value="+91">🇮🇳 +91</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+61">🇦🇺 +61</option>
-              <option value="+971">🇦🇪 +971</option>
-              {/* Add more country codes as needed */}
+              <option value="+91">🇮🇳 India (+91)</option>
+              <option value="+1">🇺🇸 USA (+1)</option>
+              <option value="+44">🇬🇧 UK (+44)</option>
+              <option value="+61">🇦🇺 Australia (+61)</option>
+              <option value="+971">🇦🇪 UAE (+971)</option>
+              <option value="+81">🇯🇵 Japan (+81)</option>
+              <option value="+49">🇩🇪 Germany (+49)</option>
+              <option value="+33">🇫🇷 France (+33)</option>
+              <option value="+39">🇮🇹 Italy (+39)</option>
+              <option value="+7">🇷🇺 Russia (+7)</option>
+              <option value="+86">🇨🇳 China (+86)</option>
+              <option value="+82">🇰🇷 South Korea (+82)</option>
+              <option value="+34">🇪🇸 Spain (+34)</option>
+              <option value="+55">🇧🇷 Brazil (+55)</option>
+              <option value="+27">🇿🇦 South Africa (+27)</option>
+              <option value="+92">🇵🇰 Pakistan (+92)</option>
+              <option value="+880">🇧🇩 Bangladesh (+880)</option>
+              <option value="+62">🇮🇩 Indonesia (+62)</option>
+              <option value="+20">🇪🇬 Egypt (+20)</option>
+              <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+              <option value="+90">🇹🇷 Turkey (+90)</option>
+              <option value="+48">🇵🇱 Poland (+48)</option>
+              <option value="+31">🇳🇱 Netherlands (+31)</option>
+              <option value="+41">🇨🇭 Switzerland (+41)</option>
+              <option value="+46">🇸🇪 Sweden (+46)</option>
+              <option value="+47">🇳🇴 Norway (+47)</option>
+              <option value="+45">🇩🇰 Denmark (+45)</option>
+              <option value="+358">🇫🇮 Finland (+358)</option>
+              <option value="+64">🇳🇿 New Zealand (+64)</option>
+              <option value="+63">🇵🇭 Philippines (+63)</option>
+              <option value="+65">🇸🇬 Singapore (+65)</option>
+              <option value="+60">🇲🇾 Malaysia (+60)</option>
+              <option value="+66">🇹🇭 Thailand (+66)</option>
+              <option value="+52">🇲🇽 Mexico (+52)</option>
+              <option value="+1-876">🇯🇲 Jamaica (+1-876)</option>
+              <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
+              <option value="+1-868">🇹🇹 Trinidad & Tobago (+1-868)</option>
+              <option value="+1-784">🇻🇨 St. Vincent (+1-784)</option>
+              <option value="+1-758">🇱🇨 St. Lucia (+1-758)</option>
+              <option value="+1-721">🇸🇽 Sint Maarten (+1-721)</option>
+              <option value="+1-242">🇧🇸 Bahamas (+1-242)</option>
+              <option value="+1-246">🇧🇧 Barbados (+1-246)</option>
+              <option value="+1-441">🇧🇲 Bermuda (+1-441)</option>
+              <option value="+1-473">🇬🇩 Grenada (+1-473)</option>
+              <option value="+1-664">🇲🇸 Montserrat (+1-664)</option>
+              <option value="+1-869">🇰🇳 St. Kitts & Nevis (+1-869)</option>
+              <option value="+1-345">🇰🇾 Cayman Islands (+1-345)</option>
+              <option value="+1-649">🇹🇨 Turks & Caicos (+1-649)</option>
+              <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
+              <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
+              <option value="+1-868">🇹🇹 Trinidad & Tobago (+1-868)</option>
+              {/* Add more as needed */}
             </select>
             <input
               type="tel"
@@ -175,7 +332,7 @@ export default function Home() {
             required
             className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 bg-white dark:bg-[#23243a]"
           /> */}
-          
+
           <textarea
             name="message"
             placeholder="Your Message"
@@ -186,12 +343,26 @@ export default function Home() {
             rows={4}
           />
           <div className="w-full max-w-md flex flex-col gap-2">
-            <label className="text-left font-medium mb-1">Comfortable Language(s):</label>
+            <label className="text-left font-medium mb-1">
+              Comfortable Language(s):
+            </label>
             <div className="flex gap-4">
               {[
-                { label: "Hindi", value: "Hindi", color: "bg-yellow-100 dark:bg-yellow-900" },
-                { label: "English", value: "English", color: "bg-blue-100 dark:bg-blue-900" },
-                { label: "Lisan", value: "Lisan", color: "bg-green-100 dark:bg-green-900" },
+                {
+                  label: "Hindi/Urdu",
+                  value: "Hindi",
+                  color: "bg-yellow-100 dark:bg-yellow-900",
+                },
+                {
+                  label: "English",
+                  value: "English",
+                  color: "bg-blue-100 dark:bg-blue-900",
+                },
+                {
+                  label: "Gujrati",
+                  value: "Gujrati",
+                  color: "bg-green-100 dark:bg-green-900",
+                },
               ].map(({ label, value, color }) => (
                 <label
                   key={value}
@@ -210,11 +381,20 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <button type="submit" className="bg-blue-600 text-white rounded-lg px-6 py-2 font-medium hover:bg-blue-700 transition">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white rounded-lg px-6 py-2 font-medium hover:bg-blue-700 transition"
+          >
             {status === "loading" ? "Sending..." : "Send Message"}
           </button>
-          {status === "success" && <p className="text-green-600 mt-2">Message sent!. Will get back to you shortly</p>}
-          {status === "error" && <p className="text-red-600 mt-2">Failed to send. Try again.</p>}
+          {status === "success" && (
+            <p className="text-green-600 mt-2">
+              Message sent!. Will get back to you shortly
+            </p>
+          )}
+          {status === "error" && (
+            <p className="text-red-600 mt-2">Failed to send. Try again.</p>
+          )}
         </form>
         <p className="mt-4 text-sm text-gray-500">
           Or{" "}
@@ -232,7 +412,9 @@ export default function Home() {
         {showPopup && (
           <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
             <div className="bg-white dark:bg-[#23243a] rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
-              <h3 className="text-lg font-semibold mb-2">Feature Under Development</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Feature Under Development
+              </h3>
               <p className="mb-4 text-gray-700 dark:text-gray-300">
                 The {"Schedule a Call"} feature is coming soon!
               </p>
@@ -269,7 +451,9 @@ export default function Home() {
             <FaInstagram className="w-6 h-6 text-pink-600 dark:text-pink-400" />
           </a>
         </div>
-        <span className="text-xs text-gray-500">© {new Date().getFullYear()} Zainab Najmi. All rights reserved.</span>
+        <span className="text-xs text-gray-500">
+          © {new Date().getFullYear()} Zainab Najmi. All rights reserved.
+        </span>
       </footer>
     </div>
   );

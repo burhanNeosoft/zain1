@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Booking from "@/models/Booking";
 import Slot from "@/models/Slot";
 
 // GET - Fetch all slots for admin
@@ -16,17 +15,11 @@ export async function GET(req: NextRequest) {
       query = { ...query, date };
     }
     
-    /* const slots = await Slot.find(query)
-      .sort({ date: 1, time: 1 })
-      .populate('bookedBy', 'name email phone'); */
-
-      
-
     const slots = await Slot.aggregate([
       { $match: query },
       {
         $lookup: {
-          from: 'bookings', // collection name (lowercase, plural)
+          from: 'bookings',
           localField: 'bookedBy',
           foreignField: '_id',
           as: 'booking'
@@ -76,7 +69,6 @@ export async function POST(req: NextRequest) {
         slots.push(slot);
       } catch (error: any) {
         if (error.code === 11000) {
-          // Duplicate slot, skip it
           continue;
         }
         throw error;
@@ -96,10 +88,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-export async function test() {
-  await connectDB();
-  const slots = await Slot.find().populate('bookedBy');
-  console.log(slots);
 }

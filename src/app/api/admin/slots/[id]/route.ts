@@ -4,12 +4,13 @@ import Slot from "@/models/Slot";
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     
-    const slot = await Slot.findById(params.id);
+    const { id } = await params;
+    const slot = await (Slot as any).findById(id);
     
     if (!slot) {
       return NextResponse.json(
@@ -25,7 +26,7 @@ export async function DELETE(
       );
     }
     
-    await Slot.findByIdAndDelete(params.id);
+    await (Slot as any).findByIdAndDelete(id);
     
     return NextResponse.json({ 
       success: true, 

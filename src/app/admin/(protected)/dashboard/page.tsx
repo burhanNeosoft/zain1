@@ -1,10 +1,25 @@
+interface Contact {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  languages: string[];
+  message: string;
+  createdAt: string;
+}
+
+interface ContactResponse {
+  success: boolean;
+  contacts: Contact[];
+}
+
 export default async function AdminDashboard() {
   // Fetch contacts from your API
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/contact`, {
     cache: "no-store",
     headers: { Cookie: `admin-auth=true` },
   });
-  const data = await res.json();
+  const data: ContactResponse = await res.json();
 
   return (
     <>
@@ -40,7 +55,7 @@ export default async function AdminDashboard() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Unique Users</p>
               <p className="text-2xl font-semibold text-gray-900">
-                {data.contacts ? new Set(data.contacts.map((c: any) => c.name)).size : 0}
+                {data.contacts ? new Set(data.contacts.map((c: Contact) => c.name)).size : 0}
               </p>
             </div>
           </div>
@@ -56,7 +71,7 @@ export default async function AdminDashboard() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">This Month</p>
               <p className="text-2xl font-semibold text-gray-900">
-                {data.contacts ? data.contacts.filter((c: any) => {
+                {data.contacts ? data.contacts.filter((c: Contact) => {
                   const contactDate = new Date(c.createdAt);
                   const now = new Date();
                   return contactDate.getMonth() === now.getMonth() && 
@@ -88,7 +103,7 @@ export default async function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.contacts.map((contact: any) => (
+                {data.contacts.map((contact: Contact) => (
                   <tr key={contact._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{contact.name}</div>

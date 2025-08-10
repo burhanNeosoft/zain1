@@ -91,7 +91,7 @@ export async function GET() {
   try {
     await connectDB();
     
-    const contacts = await Contact.find({})
+    const contacts = await (Contact as any).find({})
       .sort({ createdAt: -1 })
       .select('-__v');
     

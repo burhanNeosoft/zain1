@@ -14,23 +14,54 @@ interface ContactResponse {
 }
 
 export default async function AdminDashboard() {
-  // Fetch contacts from your API
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/contact`, {
-    cache: "no-store",
-    headers: { Cookie: `admin-auth=true` },
-  });
-  const data: ContactResponse = await res.json();
+  let data: ContactResponse | null = null;
+  let errorInfo: { status: number; message: string; details?: any } | null = null;
+  console.log("urllllllllllllllll", process.env.NEXT_PUBLIC_BASE_URL);
+  
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/contact`, {
+      cache: "no-store",
+      headers: { Cookie: `admin-auth=true` },
+    });
+
+    if (!res.ok) {
+      let body: any = null;
+      try { body = await res.json(); } catch {}
+      errorInfo = {
+        status: res.status,
+        message: body?.error || res.statusText || 'Request failed',
+        details: body,
+      };
+    } else {
+      data = await res.json();
+    }
+  } catch (e: any) {
+    errorInfo = { status: 0, message: e?.message || 'Network error' };
+  }
 
   return (
     <>
-      {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-600 mt-2">Manage your contact form submissions</p>
       </div>
 
+      {errorInfo && (
+        <div className="mb-6 rounded-md border border-red-200 bg-red-50 p-4 text-red-800">
+          <div className="font-semibold">Failed to load contacts</div>
+          <div className="text-sm mt-1">Status: {errorInfo.status}</div>
+          <div className="text-sm">Message: {errorInfo.message}</div>
+          {errorInfo.details && (
+            <pre className="mt-2 max-h-40 overflow-auto rounded bg-white p-2 text-xs text-red-700 border border-red-100">
+{JSON.stringify(errorInfo.details, null, 2)}
+            </pre>
+          )}
+        </div>
+      )}
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Total Submissions */}
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -40,11 +71,12 @@ export default async function AdminDashboard() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Submissions</p>
-              <p className="text-2xl font-semibold text-gray-900">{data.contacts?.length || 0}</p>
+              <p className="text-2xl font-semibold text-gray-900">{data?.contacts?.length || 0}</p>
             </div>
           </div>
         </div>
 
+        {/* Unique Users */}
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-green-100 text-green-600">
@@ -55,12 +87,13 @@ export default async function AdminDashboard() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Unique Users</p>
               <p className="text-2xl font-semibold text-gray-900">
-                {data.contacts ? new Set(data.contacts.map((c: Contact) => c.name)).size : 0}
+                {data?.contacts ? new Set(data.contacts.map((c) => c.name)).size : 0}
               </p>
             </div>
           </div>
         </div>
 
+        {/* This Month */}
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-purple-100 text-purple-600">
@@ -71,12 +104,14 @@ export default async function AdminDashboard() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">This Month</p>
               <p className="text-2xl font-semibold text-gray-900">
-                {data.contacts ? data.contacts.filter((c: Contact) => {
-                  const contactDate = new Date(c.createdAt);
-                  const now = new Date();
-                  return contactDate.getMonth() === now.getMonth() && 
-                         contactDate.getFullYear() === now.getFullYear();
-                }).length : 0}
+                {data?.contacts
+                  ? data.contacts.filter((c) => {
+                      const contactDate = new Date(c.createdAt);
+                      const now = new Date();
+                      return contactDate.getMonth() === now.getMonth() &&
+                        contactDate.getFullYear() === now.getFullYear();
+                    }).length
+                  : 0}
               </p>
             </div>
           </div>
@@ -89,7 +124,7 @@ export default async function AdminDashboard() {
           <h2 className="text-lg font-medium text-gray-900">Recent Contact Submissions</h2>
         </div>
         
-        {data.contacts?.length ? (
+        {data?.contacts?.length ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -140,8 +175,12 @@ export default async function AdminDashboard() {
             <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No submissions</h3>
-            <p className="mt-1 text-sm text-gray-500">Get started by creating a new contact form submission.</p>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">
+              {errorInfo ? 'Unable to load submissions' : 'No submissions'}
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+              {errorInfo ? 'Please try again later.' : 'Get started by creating a new contact form submission.'}
+            </p>
           </div>
         )}
       </div>

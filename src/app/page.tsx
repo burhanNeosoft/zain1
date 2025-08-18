@@ -1,8 +1,9 @@
 "use client";
-import { useTheme } from "./theme-context";
+import { useTheme } from "./ThemeProvider";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
+import Slot from "@/models/Slot";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -17,8 +18,47 @@ export default function Home() {
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [showPopup, setShowPopup] = useState(false);
+  // Add this state for slots
+  const [availableSlots, setAvailableSlots] = useState<any[]>([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  // New state
+  const [activeDate, setActiveDate] = useState<string>("");
+  const [selectedSlot, setSelectedSlot] = useState<any>(null);
+
+  // Add these helper functions and computed values
+  const to12h = (hm: string) => {
+    const [h, m] = hm.split(":").map(Number);
+    const ampm = h >= 12 ? "PM" : "AM";
+    const hh = (h % 12) || 12;
+    return `${hh}:${m.toString().padStart(2, "0")} ${ampm}`;
+  };
+  const to12hRange = (range: string) => {
+    const [s, e] = range.split("-");
+    return `${to12h(s)} - ${to12h(e)}`;
+  };
+
+  // Group slots by date
+  const grouped = availableSlots.reduce((acc: Record<string, any[]>, slot: any) => {
+    if (!acc[slot.date]) acc[slot.date] = [];
+    acc[slot.date].push(slot);
+    return acc;
+  }, {});
+  const dates = Object.keys(grouped);
+
+  const cleanupPastSlots = async () => {
+    // Call cleanup via API
+    fetch('/api/admin/slots', { method: 'DELETE' })
+    .then(res => res.json())
+    .then(data => console.log(data.message))
+    .catch(err => console.error('Cleanup failed:', err));
+  };
+
+  useEffect(() => { 
+    setMounted(true); 
+    //cleanupPastSlots();
+  }, []);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
@@ -69,6 +109,34 @@ export default function Home() {
       setStatus("error");
     }
   };
+
+  // Add this function to fetch available slots
+  const fetchAvailableSlots = async (date?: string) => {
+    setLoadingSlots(true);
+    try {
+      const response = await fetch(`/api/admin/slots${date ? `?date=${date}` : ""}`);
+      const data = await response.json();
+      if (data.success) {
+        // Filter only available (not booked) slots
+        const available = data.slots.filter((slot: any) => !slot.isBooked);
+        setAvailableSlots(available);
+        const firstDate = available[0]?.date || date || "";
+        setActiveDate(firstDate);
+        setSelectedSlot(null);
+      }
+    } catch (error) {
+      console.error('Error fetching slots:', error);
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
+  // Add useEffect to fetch slots when popup opens
+  useEffect(() => {
+    if (showPopup) {
+      fetchAvailableSlots();
+    }
+  }, [showPopup]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f5f6fa] via-[#e3eafc] to-[#f7f7f7] dark:from-[#18181c] dark:via-[#23243a] dark:to-[#222] transition-colors text-neutral-900 dark:text-white">
@@ -458,24 +526,173 @@ export default function Home() {
             schedule a call
           </a>
         </p>
-        {showPopup && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-[#23243a] rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                Feature Under Development
-              </h3>
-              <p className="mb-4 text-gray-700 dark:text-gray-300">
-                The {"Schedule a Call"} feature is coming soon!
-              </p>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-              >
-                Close
-              </button>
+        {/* Replace the popup with this expandable section */}
+        <section className="py-14 px-4 max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4 text-blue-700 dark:text-blue-300">
+              📅 Schedule a Session
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              Choose your preferred date and time for a consultation
+            </p>
+          </div>
+
+          {/* Toggle Button */}
+          <div className="text-center mb-6">
+            <button
+              onClick={() => setShowPopup(!showPopup)}
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              <span>{showPopup ? "Hide" : "Show"} Available Slots</span>
+              <span className={`transition-transform duration-300 ${showPopup ? 'rotate-180' : ''}`}>
+                ▼
+              </span>
+            </button>
+          </div>
+
+          {/* Expandable Content */}
+          <div className={`transition-all duration-500 overflow-hidden ${
+            showPopup ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
+          }`}>
+            <div className="bg-white/80 dark:bg-[#18181c]/80 rounded-2xl shadow-lg p-6 border border-blue-100 dark:border-blue-900 backdrop-blur">
+              {loadingSlots ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600 dark:text-gray-400">Loading available slots...</p>
+                </div>
+              ) : availableSlots.length > 0 ? (
+                <div className="space-y-6">
+                  {/* Date pills - horizontal scroll */}
+                  <div className="overflow-x-auto">
+                    <div className="flex gap-3 pb-2 min-w-max">
+                      {dates.map((date) => (
+                        <button
+                          key={date}
+                          onClick={() => {
+                            setActiveDate(date);
+                            setSelectedSlot(null);
+                          }}
+                          className={`whitespace-nowrap px-4 py-2 rounded-full border-2 transition-all duration-200 ${
+                            activeDate === date
+                              ? "bg-blue-600 text-white border-blue-600 shadow-lg"
+                              : "bg-white dark:bg-[#23243a] text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:shadow-md"
+                          }`}
+                        >
+                          <div className="text-sm font-medium">
+                            {new Date(date).toLocaleDateString("en-US", {
+                              weekday: "short",
+                            })}
+                          </div>
+                          <div className="text-lg font-bold">
+                            {new Date(date).getDate()}
+                          </div>
+                          <div className="text-xs opacity-75">
+                            {new Date(date).toLocaleDateString("en-US", {
+                              month: "short",
+                            })}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Time slots grid */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                      Available Times for {activeDate && new Date(activeDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "long",
+                        day: "numeric"
+                      })}
+                    </h3>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      {grouped[activeDate]?.map((slot: any) => {
+                        const selected = selectedSlot?._id === slot._id;
+                        return (
+                          <button
+                            key={slot._id}
+                            onClick={() => setSelectedSlot(slot)}
+                            className={`p-4 rounded-xl border-2 transition-all duration-200 text-center ${
+                              selected
+                                ? "bg-blue-600 text-white border-blue-600 shadow-lg scale-105"
+                                : "bg-white dark:bg-[#23243a] text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-blue-400 hover:shadow-md hover:scale-102"
+                            }`}
+                          >
+                            <div className="text-lg font-semibold">
+                              {to12hRange(slot.time)}
+                            </div>
+                            <div className="text-xs opacity-75 mt-1">
+                              {selected ? "Selected" : "Click to select"}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Confirmation section */}
+                  {selectedSlot && (
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+                      <div className="text-center space-y-4">
+                        <div className="text-2xl">🎉</div>
+                        <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                          Session Confirmed!
+                        </h4>
+                        <div className="space-y-2 text-gray-600 dark:text-gray-400">
+                          <p className="font-medium">
+                            {new Date(selectedSlot.date).toLocaleDateString("en-US", {
+                              weekday: "long",
+                              month: "long",
+                              day: "numeric"
+                            })}
+                          </p>
+                          <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                            {to12hRange(selectedSlot.time)}
+                          </p>
+                        </div>
+                        <div className="flex gap-3 justify-center">
+                          <button
+                            onClick={() => {
+                              alert(`Booking confirmed for ${selectedSlot.date} at ${to12hRange(selectedSlot.time)}`);
+                              setSelectedSlot(null);
+                              setShowPopup(false);
+                            }}
+                            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+                          >
+                            Confirm Booking
+                          </button>
+                          <button
+                            onClick={() => setSelectedSlot(null)}
+                            className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition"
+                          >
+                            Change Selection
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="text-4xl mb-4">🙁</div>
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                    No Available Slots
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    Please check back later or contact us directly to schedule a session.
+                  </p>
+                  <button
+                    onClick={() => fetchAvailableSlots()}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                  >
+                    Refresh Slots
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </section>
       </section>
 
       {/* Footer Section */}

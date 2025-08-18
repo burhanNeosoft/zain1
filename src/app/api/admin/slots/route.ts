@@ -89,3 +89,31 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+// DELETE - Clean up past unbooked slots
+export async function DELETE(req: NextRequest) {
+  try {
+    await connectDB();
+    
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    
+    // Delete slots that are in the past and not booked
+    const result = await Slot.deleteMany({
+      date: { $lt: today },
+      isBooked: false
+    });
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: `Cleaned up ${result.deletedCount} past unbooked slots`,
+      deletedCount: result.deletedCount
+    });
+    
+  } catch (error: any) {
+    console.error('Error cleaning up slots:', error);
+    return NextResponse.json(
+      { success: false, error: error.message }, 
+      { status: 500 }
+    );
+  }
+}

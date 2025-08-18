@@ -44,6 +44,16 @@ const slotSchema = new mongoose.Schema({
 // Compound index to ensure unique date-time combinations
 slotSchema.index({ date: 1, time: 1 }, { unique: true });
 
+// Static method to clean up past unbooked slots
+slotSchema.statics.cleanupPastSlots = async function() {
+  const today = new Date().toISOString().split('T')[0];
+  const result = await this.deleteMany({
+    date: { $lt: today },
+    isBooked: false
+  });
+  return result.deletedCount;
+};
+
 const Slot = mongoose.models.Slot || mongoose.model('Slot', slotSchema);
 
 export default Slot;

@@ -1,0 +1,323 @@
+.year-calendar-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  /* Year Dropdown Button */
+  .year-dropdown {
+    display: flex; /* Horizontal layout for text and icon */
+    align-items: center; /* Vertically centers text and icon */
+    justify-content: space-between; /* Pushes text and icon to opposite ends */
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    &:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      
+      .calendar-icon {
+        color: #3b82f6;
+      }
+    }
+    
+    .dropdown-text {
+      font-size: 16px;
+      color: #374151;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .calendar-icon {
+      color: #6b7280;
+      display: flex; /* Centers the SVG icon */
+      align-items: center;
+      transition: color 0.2s ease;
+      flex-shrink: 0;
+      
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+  
+  /* Dropdown Panel */
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    
+    &.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Panel Header */
+  .panel-header {
+    display: flex; /* Horizontal layout for title and toggle */
+    align-items: center; /* Vertically centers title and toggle */
+    justify-content: space-between; /* Pushes title and toggle apart */
+    margin-bottom: 20px;
+    
+    .panel-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+  }
+  
+  /* Calendar Toggle */
+.calendar-toggle {
+  display: flex; /* Horizontal layout for H, toggle, G */
+  align-items: center; /* Vertically centers all toggle elements */
+  gap: 8px; /* Space between H, toggle, and G */
+  
+  .toggle-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    transition: color 0.2s ease;
+    user-select: none;
+    
+    &.active {
+      color: #10b981;
+    }
+  }
+}
+
+/* Manual Input Section */
+.manual-input-section {
+  margin: 16px 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  
+  .input-wrapper {
+    display: flex; /* Horizontal layout for input and hint */
+    align-items: center; /* Vertically centers input and hint */
+    gap: 12px; /* Space between input and hint */
+    
+    .manual-input {
+      flex: 1; /* Takes available space */
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      background: #ffffff;
+      transition: all 0.2s ease;
+      
+      &:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+      
+      &.error {
+        border-color: #ef4444;
+        background: #fef2f2;
+        
+        &:focus {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+      }
+      
+      &::placeholder {
+        color: #9ca3af;
+        font-weight: 400;
+      }
+    }
+    
+    .input-hint {
+      font-size: 12px;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+  }
+  
+  .error-message {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #ef4444;
+    font-weight: 500;
+  }
+}
+  
+  .toggle-switch {
+    width: 48px;
+    height: 24px;
+    background: #e5e7eb;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+    &.active {
+      background: #10b981;
+    }
+    
+    .toggle-slider {
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border-radius: 10px;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    &.active .toggle-slider {
+      transform: translateX(24px);
+    }
+  }
+  
+  /* Year Lists Container */
+  .year-lists-container {
+    display: flex; /* Side by side columns */
+    gap: 16px; /* Space between columns */
+  }
+  
+  .single-column-container {
+    width: 100%;
+  }
+  
+  /* Year Columns */
+  .year-column {
+    flex: 1; /* Equal width columns */
+    display: flex; /* Vertical stacking of year items */
+    flex-direction: column;
+    gap: 8px; /* Space between year items */
+    
+    &.single-year-column {
+      width: 100%;
+    }
+  }
+  
+  .year-item {
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    user-select: none;
+    
+    &:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    
+    &.selected {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-color: #3b82f6;
+      font-weight: 600;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .year-calendar-container {
+      max-width: 100%;
+    }
+    
+    .dropdown-panel {
+      padding: 16px;
+      left: -10px;
+      right: -10px;
+    }
+    
+    .year-lists-container {
+      flex-direction: column; /* Stack columns vertically on mobile */
+      gap: 12px;
+    }
+    
+    .panel-header {
+      .panel-title {
+        font-size: 16px;
+      }
+    }
+    
+    .calendar-toggle {
+      gap: 6px;
+      
+      .toggle-label {
+        font-size: 12px;
+      }
+    }
+    
+    .toggle-switch {
+      width: 40px;
+      height: 20px;
+      
+      .toggle-slider {
+        width: 16px;
+        height: 16px;
+      }
+      
+      &.active .toggle-slider {
+        transform: translateX(20px);
+      }
+    }
+    
+    .year-item {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+  }
+
+
+
+
+  /* Base = phones */
+.cards {
+  display: flex; /* Creates horizontal/vertical flex layout */
+  flex-direction: column; /* Stacks items on small screens */
+  gap: 12px;
+
+  [dir=rtl] & {
+    font-family: Montserrat;
+  }
+}
+
+/* Tablets and up */
+@media (min-width: 768px) {
+  .cards {
+    flex-direction: row; /* Places items in a row on wider screens */
+  }
+}
+
+/* Laptops and up */
+@media (min-width: 1024px) {
+  .cards > .card {
+    max-width: 480px;
+  }
+}

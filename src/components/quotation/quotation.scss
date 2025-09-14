@@ -1,0 +1,289 @@
+// Add this to your quotation.scss file
+
+// Pricing Cards Row
+.pricing-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 0 20px;
+}
+
+.pricing-card {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  min-height: 160px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--trusted {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+
+  &--recommended {
+    background: #f0fdf4;
+    color: #166534;
+  }
+}
+
+.card-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  background: #ffffff;
+  position: relative;
+
+  &:checked {
+    background: #3b82f6;
+    border-color: #3b82f6;
+
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+
+  &--teal {
+    background: #14b8a6;
+  }
+
+  &--orange {
+    background: #f97316;
+  }
+
+  &--gray {
+    background: #6b7280;
+  }
+}
+
+.plan-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.plan-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: #3b82f6;
+  margin: 4px 0;
+}
+
+.plan-total {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+// Responsive design for cards
+@media (max-width: 1024px) {
+  .pricing-cards {
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+  }
+}
+
+@media (max-width: 640px) {
+  .pricing-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .pricing-card {
+    min-height: 140px;
+  }
+}
+
+// Footer container
+.footer-container {
+  display: flex; /* Creates horizontal layout for summary and button */
+  justify-content: space-between; /* Pushes content to opposite ends */
+  align-items: center; /* Vertically centers all content */
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: 24px; /* Adds space between summary and button */
+
+  // Responsive design nested inside parent
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stacks summary and button vertically */
+    align-items: stretch; /* Makes button full width */
+    gap: 16px; /* Reduces gap for mobile */
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
+}
+
+// Left side - pricing summary
+.pricing-summary {
+  display: flex; /* Stacks content vertically */
+  flex-direction: column; /* Changes from horizontal to vertical layout */
+  gap: 8px; /* Adds space between each summary item */
+  flex: 1; /* Takes available space, leaving room for button */
+}
+
+.summary-header {
+  display: flex; /* Creates horizontal layout for title and info */
+  justify-content: space-between; /* Pushes title and info to opposite ends */
+  align-items: center; /* Vertically aligns title and info */
+  margin-bottom: 4px;
+
+  // Responsive nested inside parent
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stacks title and info vertically */
+    align-items: flex-start; /* Aligns everything to left */
+    gap: 4px; /* Small gap between title and info */
+  }
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.summary-info {
+  display: flex; /* Aligns icon and text horizontally */
+  align-items: center; /* Vertically centers icon and text */
+  gap: 4px; /* Small space between icon and text */
+
+  .info-icon {
+    font-size: 14px;
+    color: #3b82f6;
+  }
+
+  .vat-text {
+    font-size: 12px;
+    color: #3b82f6;
+    font-weight: 500;
+  }
+}
+
+.total-amount {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111827;
+  margin: 8px 0;
+
+  // Responsive nested
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
+}
+
+.disclaimer {
+  display: flex; /* Aligns icon and text horizontally */
+  align-items: flex-start; /* Aligns items to top for multiline text */
+  gap: 6px; /* Space between icon and disclaimer text */
+
+  &-text {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.4;
+    max-width: 300px;
+
+    @media (max-width: 480px) {
+      max-width: 100%;
+    }
+  }
+}
+
+// Right side - buy button
+.buy-now-btn {
+  display: flex; /* Aligns button text and arrow horizontally */
+  align-items: center; /* Vertically centers text and arrow */
+  gap: 8px; /* Space between text and arrow */
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+
+    .arrow-icon {
+      transform: translateX(2px);
+    }
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+
+  // Responsive nested
+  @media (max-width: 768px) {
+    justify-content: center; /* Centers button content */
+    width: 100%;
+  }
+
+  .arrow-icon {
+    font-size: 18px;
+    transition: transform 0.2s ease;
+  }
+}

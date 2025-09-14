@@ -1,0 +1,226 @@
+.accordion-list {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  // Accordion items
+ .accordion-items {
+    background: #ffffff;
+    padding: 16px;
+  }
+  
+  .accordion-item {
+    border-bottom: 1px solid #f3f4f6;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  // Record rows (both main and dependent)
+  .record-row {
+    display: flex; /* Creates horizontal layout for content and actions */
+    justify-content: space-between; /* Pushes content and actions to opposite ends */
+    align-items: center; /* Vertically centers all content */
+    padding: 16px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #f8fafc;
+    }
+    
+    &.opened {
+      background: #e0f2fe;
+      
+      &:hover {
+        background: #b3e5fc;
+      }
+    }
+  }
+  
+  .dependent-row {
+    display: flex; /* Creates horizontal layout for content and actions */
+    justify-content: space-between; /* Pushes content and actions to opposite ends */
+    align-items: center; /* Vertically centers all content */
+    padding: 12px 16px 12px 32px;
+    background: #f0f9ff;
+    border-top: 1px solid #e0f2fe;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #e0f2fe;
+    }
+  }
+  
+  // Record content
+  .record-content {
+    display: flex; /* Aligns checkbox and info horizontally */
+    align-items: center; /* Vertically centers checkbox and info */
+    gap: 12px; /* Space between checkbox and info */
+    flex: 1; /* Takes available space */
+  }
+  
+  .checkbox-wrapper {
+    display: flex; /* Centers checkbox */
+    align-items: center; /* Vertically centers checkbox */
+  }
+  
+  .record-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .record-info {
+    display: flex; /* Stacks header and details vertically */
+    flex-direction: column; /* Changes from horizontal to vertical layout */
+    gap: 4px; /* Space between header and details */
+    flex: 1; /* Takes available space */
+  }
+  
+  .record-header {
+    display: flex; /* Aligns name and badge horizontally */
+    align-items: center; /* Vertically centers name and badge */
+    gap: 12px; /* Space between name and badge */
+  }
+  
+  .record-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+  
+  .record-badge {
+    background: #ea580c;
+    color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .record-details {
+    font-size: 12px;
+    color: #6b7280;
+    direction: rtl;
+    text-align: left;
+  }
+  
+  // Record actions
+  .record-actions {
+    display: flex; /* Aligns price and buttons horizontally */
+    align-items: center; /* Vertically centers price and buttons */
+    gap: 16px; /* Space between price and buttons */
+  }
+  
+  .price-display {
+    display: flex; /* Aligns currency and amount horizontally */
+    align-items: center; /* Vertically centers currency and amount */
+    gap: 4px; /* Small space between currency and amount */
+    font-weight: 700;
+    color: #059669;
+  }
+  
+  .currency {
+    font-size: 14px;
+  }
+  
+  .amount {
+    font-size: 16px;
+  }
+  
+  .action-buttons {
+    display: flex; /* Aligns action buttons horizontally */
+    align-items: center; /* Vertically centers buttons */
+    gap: 8px; /* Space between buttons */
+  }
+  
+  .action-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex; /* Centers button content */
+    align-items: center; /* Vertically centers button content */
+    justify-content: center; /* Horizontally centers button content */
+    font-size: 14px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+    }
+  }
+  
+  .edit-btn {
+    color: #3b82f6;
+    
+    &:hover {
+      background: #eff6ff;
+      border-color: #3b82f6;
+    }
+  }
+  
+  .delete-btn {
+    color: #ef4444;
+    
+    &:hover {
+      background: #fef2f2;
+      border-color: #ef4444;
+    }
+  }
+  
+  .expand-btn {
+    color: #6b7280;
+  }
+  
+  .expand-arrow {
+    transition: transform 0.2s ease;
+    
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+  
+  // Dependents container with slide animation
+  .dependents-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    
+    &.expanded {
+      max-height: 300px;
+    }
+  }
+  
+  // Responsive design
+  @media (max-width: 768px) {
+    .record-row,
+    .dependent-row {
+      flex-direction: column; /* Stacks content and actions vertically */
+      align-items: stretch; /* Makes content full width */
+      gap: 12px; /* Space between content and actions */
+    }
+    
+    .record-actions {
+      justify-content: space-between; /* Spreads price and buttons */
+      width: 100%;
+    }
+    
+    .record-name {
+      font-size: 14px;
+    }
+    
+    .price-display {
+      font-size: 14px;
+    }
+  }

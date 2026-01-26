@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "burhanuddin.neosoft@gmail.com",
+        user: "zainab786jodiya@gmail.com",
         pass: process.env.GOOGLE_APP_PASS, // Use Gmail App Password, not your main password
       },
     });
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     }); */
 
     // Send email
-    /* await transporter.sendMail({
+    await transporter.sendMail({
       from: email,
       to: "zainab786jodiya@gmail.com",
       subject: `New Contact Form Submission from ${name}`,
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
              <p><strong>Phone:</strong> ${phone}</p>
              <p><strong>Comfortable Language(s):</strong> ${languages.join(",")}</p>
              <p><strong>Message:</strong><br/>${message}</p>`,
-    }); */
+    });
 
     return NextResponse.json({ 
       success: true, 

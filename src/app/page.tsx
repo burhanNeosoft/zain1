@@ -94,6 +94,8 @@ export default function Home() {
       });
       if (res.ok) {
         setStatus("success");
+        setTimeout(() => setStatus("idle"), 4000);
+
         setForm({
           name: "",
           countryCode: "+91",

@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "burhanuddin.neosoft@gmail.com",
+      user: "zainab786jodiya@gmail.com",
       pass: process.env.GOOGLE_APP_PASS, // Use Gmail App Password, not your main password
     },
   });

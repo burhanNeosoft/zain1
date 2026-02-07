@@ -7,7 +7,7 @@ interface Slot {
   time: string;
   isBooked: boolean;
   isActive: boolean;
-  bookedBy?: {
+  booking?: {
     name: string;
     email: string;
     phone: string;
@@ -25,7 +25,7 @@ export default function SlotManagement() {
   // Generate next 14 days
   const generateNextDays = () => {
     const days = [];
-    for (let i = 0; i < 14; i++) {
+    for (let i = 1; i < 15; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
       days.push(date.toISOString().split('T')[0]);
@@ -138,6 +138,27 @@ export default function SlotManagement() {
       alert('Error deleting slot');
     }
   };
+
+  const handleUpdate = async (slotId: string) => {
+    if (!confirm('Are you sure you want to mark this slot as attended?')) return;
+    try {
+      const response = await fetch(`/api/admin/slots/${slotId}`, {
+        method: 'PUT'
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        fetchSlots();
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error('Error deleting slot:', error);
+      alert('Error deleting slot');
+    }
+
+  }
 
   return (
     <div className="space-y-6">
@@ -340,25 +361,42 @@ export default function SlotManagement() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {slot.bookedBy ? (
+                      {slot.booking ? (
                         <div className="text-sm text-gray-900">
-                          <div>{slot.bookedBy.name}</div>
-                          <div className="text-gray-500">{slot.bookedBy.email}</div>
-                          <div className="text-gray-500">{slot.bookedBy.phone}</div>
+                          <div>{slot.booking.name}</div>
+                          <div className="text-gray-500">{slot.booking.email}</div>
+                          <div className="text-gray-500">{slot.booking.phone}</div>
                         </div>
                       ) : (
                         <span className="text-gray-400">-</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {!slot.isBooked && (
+                      {!slot.isBooked ? (
                         <button
                           onClick={() => handleDeleteSlot(slot._id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-600 hover:text-red-900 cursor-pointer"
                         >
                           Delete
                         </button>
-                      )}
+                      ) : 
+                      <div className="flex gap-2">
+                      
+                        <button
+                          onClick={() => handleUpdate(slot._id)}
+                          className="text-blue-600 hover:text-blue-900 cursor-pointer"
+                        >
+                          Mark it Attended
+                        </button>
+
+                        {/* <button
+                          onClick={() => handleDeleteSlot(slot._id)}
+                          className="text-red-600 hover:text-red-900 cursor-pointer"
+                        >
+                          Delete
+                        </button> */}
+                        </div>
+                      }
                     </td>
                   </tr>
                 ))}

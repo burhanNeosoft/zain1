@@ -1,4 +1,4 @@
-import SlotManagement from "./SlotManagement";
+import SlotManagement from "../../../../components/SlotManagement";
 
 export default function AdminSlots() {
   return (

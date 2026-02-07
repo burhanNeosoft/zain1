@@ -41,3 +41,39 @@ export async function DELETE(
     );
   }
 } 
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectDB();
+    
+    const { id } = await params;
+    const slot = await (Slot as any).findById(id);
+    
+    if (!slot) {
+      return NextResponse.json(
+        { success: false, error: 'Slot not found' },
+        { status: 404 }
+      );
+    }
+    
+    
+    const updatedSlot = await (Slot as any).findByIdAndUpdate(id, { markAttended: true }, { new: true });
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Slot Updated successfully',
+      slot: updatedSlot
+    });
+    
+  } catch (error: any) {
+    console.error('Error deleting slot:', error);
+    return NextResponse.json(
+      { success: false, error: error.message }, 
+      { status: 500 }
+    );
+  }
+} 
+

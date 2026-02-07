@@ -35,6 +35,10 @@ const slotSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  markAttended: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

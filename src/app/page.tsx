@@ -3,7 +3,8 @@ import { useTheme } from "./ThemeProvider";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
-import Slot from "@/models/Slot";
+
+import BookingButton from "@/components/BookingButton";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -465,7 +466,7 @@ export default function Home() {
             <label className="text-left font-medium mb-1">
               Comfortable Language(s):
             </label>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               {[
                 {
                   label: "Hindi/Urdu",
@@ -485,7 +486,7 @@ export default function Home() {
               ].map(({ label, value, color }) => (
                 <label
                   key={value}
-                  className={`flex items-center gap-2 px-3 py-1 rounded-lg cursor-pointer shadow-sm transition-all border border-gray-200 dark:border-gray-700 ${color} hover:scale-105`}
+                  className={`flex items-center gap-2 px-3 py-1 rounded-lg cursor-pointer shadow-sm transition-all border border-gray-200 dark:border-gray-700 ${color} hover:scale-105 `}
                 >
                   <input
                     type="checkbox"
@@ -528,6 +529,7 @@ export default function Home() {
             schedule a call
           </a>
         </p>
+        
         {/* Replace the popup with this expandable section */}
         <section className="py-14 px-4 max-w-4xl mx-auto">
           <div className="text-center mb-8">
@@ -553,8 +555,8 @@ export default function Home() {
           </div>
 
           {/* Expandable Content */}
-          <div className={`transition-all duration-500 overflow-hidden ${
-            showPopup ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
+          <div className={`transition-all duration-500 ${
+            showPopup ? 'opacity-100' : 'max-h-0 opacity-0'
           }`}>
             <div className="bg-white/80 dark:bg-[#18181c]/80 rounded-2xl shadow-lg p-6 border border-blue-100 dark:border-blue-900 backdrop-blur">
               {loadingSlots ? (
@@ -604,7 +606,8 @@ export default function Home() {
                       Available Times for {activeDate && new Date(activeDate).toLocaleDateString("en-US", {
                         weekday: "long",
                         month: "long",
-                        day: "numeric"
+                        day: "numeric",
+                        year: "numeric"
                       })}
                     </h3>
                     
@@ -646,7 +649,8 @@ export default function Home() {
                             {new Date(selectedSlot.date).toLocaleDateString("en-US", {
                               weekday: "long",
                               month: "long",
-                              day: "numeric"
+                              day: "numeric",
+                              year: "numeric"
                             })}
                           </p>
                           <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
@@ -654,16 +658,10 @@ export default function Home() {
                           </p>
                         </div>
                         <div className="flex gap-3 justify-center">
-                          <button
-                            onClick={() => {
-                              alert(`Booking confirmed for ${selectedSlot.date} at ${to12hRange(selectedSlot.time)}`);
-                              setSelectedSlot(null);
-                              setShowPopup(false);
-                            }}
-                            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
-                          >
-                            Confirm Booking
-                          </button>
+                          <BookingButton 
+                            amount={50} 
+                            slotId={selectedSlot._id}
+                          />
                           <button
                             onClick={() => setSelectedSlot(null)}
                             className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition"

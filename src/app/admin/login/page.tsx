@@ -45,7 +45,7 @@ export default function AdminLogin() {
           required
         />
         {error && <div className="text-red-500 mb-2">{error}</div>}
-        <button className="w-full bg-blue-600 text-white p-2 rounded" type="submit">
+        <button className="w-full bg-blue-600 text-white p-2 rounded cursor-pointer hover:bg-blue-700 transition-colors" type="submit">
           Login
         </button>
       </form>

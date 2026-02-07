@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const date = searchParams.get('date');
     
-    let query: any = { isActive: true };
+    let query: any = { isActive: true, markAttended: false };
     if (date) {
       query = { ...query, date };
     }

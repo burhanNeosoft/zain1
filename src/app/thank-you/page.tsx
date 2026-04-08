@@ -1,10 +1,10 @@
 'use client';
-
+import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { CheckCircle } from 'lucide-react';
 
-export default function ThankYouPage() {
+const ThankYouContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const paymentId = searchParams.get('paymentId');
@@ -39,5 +39,17 @@ export default function ThankYouPage() {
         </button>
       </div>
     </div>
+  )
+}
+
+export default function ThankYouPage() {
+  
+
+  return (
+    <>
+    <Suspense fallback={<div>Loading booking details...</div>}>
+      <ThankYouContent/>
+    </Suspense>
+    </>
   );
 }

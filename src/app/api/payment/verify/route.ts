@@ -5,35 +5,72 @@ import { google } from 'googleapis';
 import Booking from '@/models/Booking';
 import Slot from '@/models/Slot';
 import connectDB from '@/lib/mongodb';
-import { sendBookingConfirmationEmail } from '@/lib/email';
+import { sendBookingConfirmationEmail, sendAdminNotificationEmail } from '@/lib/email';
 
 const calendar = google.calendar('v3');
 
-async function getGoogleAuthClient() {
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      type: 'service_account',
-      project_id: process.env.GOOGLE_PROJECT_ID,
-      private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      client_id: process.env.GOOGLE_CLIENT_ID,
-    },
-    scopes: ['https://www.googleapis.com/auth/calendar'],
-  });
+function generateGoogleCalendarLink(
+  bookingDetails: { name: string; email: string; phone: string },
+  slotData: { date: string; time: string },
+  paymentId: string
+): string {
+  const [startTime, endTime] = slotData.time.split('-');
+  const eventDate = new Date(slotData.date);
+  const [startHour, startMin] = startTime.split(':');
+  const [endHour, endMin] = endTime.split(':');
 
-  return auth;
+  const startDateTime = new Date(eventDate);
+  startDateTime.setHours(parseInt(startHour), parseInt(startMin), 0);
+
+  const endDateTime = new Date(eventDate);
+  endDateTime.setHours(parseInt(endHour), parseInt(endMin), 0);
+
+  // Format dates for Google Calendar URL (YYYYMMDDTHHMMSS)
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}${month}${day}T${hours}${minutes}00`;
+  };
+
+  const startDate = formatDate(startDateTime);
+  const endDate = formatDate(endDateTime);
+
+  const eventTitle = `Booking Confirmed - ${bookingDetails.name}`;
+  const eventDescription = `Payment ID: ${paymentId}\nPhone: ${bookingDetails.phone}`;
+
+  // Google Calendar URL format
+  const calendarUrl = new URL('https://calendar.google.com/calendar/u/0/r/eventedit');
+  calendarUrl.searchParams.append('text', eventTitle);
+  calendarUrl.searchParams.append('dates', `${startDate}/${endDate}`);
+  calendarUrl.searchParams.append('details', eventDescription);
+  calendarUrl.searchParams.append('location', 'Online');
+
+  return calendarUrl.toString();
 }
 
 async function createCalendarEvent(
-  bookingDetails: any,
-  slotData: any,
+  bookingDetails: { name: string; email: string; phone: string },
+  slotData: { date: string; time: string },
   paymentId: string
-): Promise<string | null> {
+): Promise<{ eventId: string | null; calendarLink: string | null }> {
   try {
-    const auth = await getGoogleAuthClient();
-    const [startTime, endTime] = slotData.time.split('-');
+    const serviceKey = process.env.GOOGLE_SERVICE_KEY?.replace(/\\n/g, '\n');
+    const serviceEmail = process.env.GOOGLE_SERVICE_EMAIL;
 
+    if (!serviceKey || !serviceEmail) {
+      throw new Error('Missing Google service account credentials');
+    }
+
+    const auth = new google.auth.JWT({
+      email: serviceEmail,
+      key: serviceKey,
+      scopes: ['https://www.googleapis.com/auth/calendar'],
+    });
+
+    const [startTime, endTime] = slotData.time.split('-');
     const eventDate = new Date(slotData.date);
     const [startHour, startMin] = startTime.split(':');
     const [endHour, endMin] = endTime.split(':');
@@ -55,28 +92,24 @@ async function createCalendarEvent(
         dateTime: endDateTime.toISOString(),
         timeZone: 'UTC',
       },
-      attendees: [
-        {
-          email: process.env.GOOGLE_APP_EMAIL,
-          displayName: 'Admin',
-          responseStatus: 'needsAction',
-        },
-      ],
-      sendUpdates: 'all',
     };
 
     const response = await calendar.events.insert({
       auth,
       calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary',
       requestBody: event,
-      sendNotifications: true,
     });
 
-    console.log('Calendar event created:', response.data.id);
-    return response.data.id || null;
+    const eventId = response.data.id;
+    const calendarLink = generateGoogleCalendarLink(bookingDetails, slotData, paymentId);
+
+    console.log('✅ Calendar event created:', eventId);
+    console.log('📅 Calendar link:', calendarLink);
+
+    return { eventId, calendarLink };
   } catch (error) {
-    console.error('Google Calendar error:', error);
-    throw error;
+    console.error('❌ Google Calendar error:', error);
+    return { eventId: null, calendarLink: null };
   }
 }
 
@@ -93,7 +126,6 @@ export async function POST(request: NextRequest) {
       slotId,
     } = await request.json();
 
-    // Verify signature
     const body = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
@@ -144,17 +176,22 @@ export async function POST(request: NextRequest) {
     });
 
     let calendarEventId: string | null = null;
+    let calendarLink: string | null = null;
     try {
-      calendarEventId = await createCalendarEvent(
+      const calendarEvent = await createCalendarEvent(
         bookingDetails,
-        slot,
+        {
+          date: slot.date,
+          time: slot.time,
+        },
         razorpay_payment_id
       );
+      calendarEventId = calendarEvent.eventId;
+      calendarLink = calendarEvent.calendarLink;
     } catch (calendarError) {
       console.error('Failed to create calendar event:', calendarError);
     }
 
-    // Send booking confirmation email
     try {
       await sendBookingConfirmationEmail({
         to: bookingDetails.email,
@@ -162,10 +199,24 @@ export async function POST(request: NextRequest) {
         date: slot.date,
         time: slot.time,
         paymentId: razorpay_payment_id,
+        calendarLink: calendarLink || undefined,
       });
     } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError);
-      // Don't fail the booking if email fails
+      console.error('Failed to send customer email:', emailError);
+    }
+
+    try {
+      await sendAdminNotificationEmail({
+        customerName: bookingDetails.name,
+        customerEmail: bookingDetails.email,
+        customerPhone: bookingDetails.phone,
+        date: slot.date,
+        time: slot.time,
+        paymentId: razorpay_payment_id,
+        amount,
+      });
+    } catch (adminEmailError) {
+      console.error('Failed to send admin notification:', adminEmailError);
     }
 
     return NextResponse.json({
@@ -175,6 +226,7 @@ export async function POST(request: NextRequest) {
         paymentId: booking.paymentId,
         status: booking.status,
         calendarEventId,
+        calendarLink,
       },
     });
   } catch (error) {

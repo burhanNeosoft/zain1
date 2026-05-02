@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 
 import BookingButton from "@/components/BookingButton";
+import PsychChatbot from "@/components/PsychChatbot";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -556,7 +557,7 @@ export default function Home() {
 
           {/* Expandable Content */}
           <div className={`transition-all duration-500 ${
-            showPopup ? 'opacity-100' : 'max-h-0 opacity-0'
+            showPopup ? 'block' : 'hidden'
           }`}>
             <div className="bg-white/80 dark:bg-[#18181c]/80 rounded-2xl shadow-lg p-6 border border-blue-100 dark:border-blue-900 backdrop-blur">
               {loadingSlots ? (
@@ -720,6 +721,7 @@ export default function Home() {
         <span className="text-xs text-gray-500">
           © {new Date().getFullYear()} Zainab Najmi. All rights reserved.
         </span>
+        <PsychChatbot />
       </footer>
     </div>
   );

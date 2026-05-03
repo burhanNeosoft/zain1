@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "burhanuddin.neosoft@gmail.com",
+        user: process.env.GOOGLE_APP_EMAIL, //"burhanuddin.neosoft@gmail.com",
         pass: process.env.GOOGLE_APP_PASS, // Use Gmail App Password, not your main password
       },
     });
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     // Send email
     await transporter.sendMail({
       from: email,
-      to: "burhanuddin.neosoft@gmail.com",
+      to: process.env.GOOGLE_APP_EMAIL,
       subject: `New Contact Form Submission from ${name}`,
       text: message,
       html: `<p><strong>Name:</strong> ${name}</p>

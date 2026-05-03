@@ -22,7 +22,6 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
   // Add this state for slots
   const [availableSlots, setAvailableSlots] = useState<any[]>([]);
-  const [selectedDate, setSelectedDate] = useState("");
   const [loadingSlots, setLoadingSlots] = useState(false);
 
   // New state
@@ -517,7 +516,7 @@ export default function Home() {
             <p className="text-red-600 mt-2">Failed to send. Try again.</p>
           )}
         </form>
-        <p className="mt-4 text-sm text-gray-500">
+        <p className="mt-4 text-sm text-gray-500 hidden">
           Or{" "}
           <a
             href="#"
@@ -532,7 +531,7 @@ export default function Home() {
         </p>
         
         {/* Replace the popup with this expandable section */}
-        <section className="py-14 px-4 max-w-4xl mx-auto">
+        <section className="py-14 px-4 max-w-4xl mx-auto hidden">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-4 text-blue-700 dark:text-blue-300">
               📅 Schedule a Session

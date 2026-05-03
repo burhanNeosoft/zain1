@@ -4,5 +4,11 @@ export type ThemeContextType = {
   theme: string;
   setTheme: (t: string) => void;
 };
-export const ThemeContext = createContext<ThemeContextType>({ theme: "light", setTheme: () => {} });
+
+// Change default to dark mode
+export const ThemeContext = createContext<ThemeContextType>({ 
+  theme: "dark", 
+  setTheme: () => {} 
+});
+
 export const useTheme = () => useContext(ThemeContext);

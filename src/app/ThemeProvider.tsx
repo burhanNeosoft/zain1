@@ -1,29 +1,63 @@
 "use client";
-import { useEffect, useState } from "react";
-import { ThemeContext } from "./theme-context";
+import { createContext, useContext, useEffect, useState } from "react";
 
-export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState("light");
+export const ThemeContext = createContext({
+  theme: "dark", // Default to dark
+  setTheme: (theme: string) => {},
+});
+
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
+
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [theme, setTheme] = useState("dark"); // Start with dark
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-    if (stored) {
-      setTheme(stored);
+    setMounted(true);
+    
+    // Check localStorage first
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
+      // If no saved theme, check system preference
+      /* const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setTheme(prefersDark ? "dark" : "light"); */
     }
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.remove("dark", "light");
-    document.documentElement.classList.add(theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    if (mounted) {
+      localStorage.setItem("theme", theme);
+      // Apply dark class to html element
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+  }, [theme, mounted]);
+
+  // Apply dark mode immediately on mount to prevent flash
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
+
+  if (!mounted) {
+    return <div className="dark">{children}</div>; // Show dark mode during SSR
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
-}
+};
+
+export default ThemeProvider;

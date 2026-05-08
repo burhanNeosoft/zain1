@@ -1,0 +1,221 @@
+/* @import '../styles/variables.scss'; */
+
+.whyBuyContainer {
+  background-color: white;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 64px 140px;
+  
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    padding: 48px 24px;
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.6;
+  color: #333639;
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #585d61;
+  margin: 0;
+  letter-spacing: 0;
+  max-width: 848px;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.featureItem {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #d9d7d4;
+  align-items: flex-start;
+  min-height: 134px;
+  background-color: white;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.iconContainer {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.featureContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333639;
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.featureDescription {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #585d61;
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.ctaSection {
+  background: linear-gradient(90deg, #ddeaf2 0%, #b5daf0 100%);
+  padding: 16px 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 102px;
+  position: relative;
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+    padding: 20px 16px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://www.figma.com/api/mcp/asset/c4687436-4b5c-4331-8499-4727cd77997f') no-repeat;
+    background-size: cover;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.ctaText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333639;
+  margin: 0;
+  letter-spacing: 0;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  
+  @media (max-width: 768px) {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+.ctaButton {
+  border: 1px solid #005b96;
+  background-color: transparent;
+  color: #005b96;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  min-width: 162px;
+  text-align: center;
+  
+  &:hover {
+    background-color: #005b96;
+    color: white;
+  }
+  
+  &:active {
+    background-color: #004978;
+    border-color: #004978;
+  }
+}
+
+.imageContainer {
+  flex-shrink: 0;
+  width: 420px;
+  height: 675px;
+  border-radius: 8px;
+  overflow: hidden;
+  
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+  }
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -34,7 +34,12 @@ export default function PsychChatbot() {
         body: JSON.stringify({ messages: updated }),
       });
       const data = await res.json();
-      setMessages([...updated, { role: "assistant", content: data.reply }]);
+      if(data.reply.includes('Your details have been sent to Zainab.')){
+
+        setMessages([...updated, { role: "assistant", content: data.reply }]);  
+      } else {
+        setMessages([...updated, { role: "assistant", content: data.reply }]);
+      }
     } catch {
       setMessages([...updated, { role: "assistant", content: "Something went wrong. Please try again." }]);
     } finally {

@@ -19,12 +19,17 @@ const contactSchema = new mongoose.Schema({
   },
   languages: [{
     type: String,
-    required: [true, 'Languages are required'],
+    //required: false,
   }],
   message: {
     type: String,
-    required: [true, 'Message is required'],
-    trim: true,
+    //required: false, //[true, 'Message is required'],
+    //trim: true,
+  },
+  topic: {
+    type: String,
+    //required: false, //[true, 'Message is required'],
+    //trim: true,
   },
   createdAt: {
     type: Date,

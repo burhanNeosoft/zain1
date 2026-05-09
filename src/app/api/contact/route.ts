@@ -4,7 +4,7 @@ import connectDB from "@/lib/mongodb";
 import Contact from "@/models/Contact";
 
 export async function POST(req: NextRequest) {
-  const { name, email, phone, languages, message } = await req.json();
+  const { name, email, phone, languages=['default'], message='n/a', topic='' } = await req.json();
   
 
   try {
@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
       phone,
       languages,
       message,
+      topic,
     });
 
     //console.log('Contact data being saved:', { name, email, phone, languages, message });
@@ -50,8 +51,10 @@ export async function POST(req: NextRequest) {
       subject: `New Contact Form Submission from ${name}`,
       text: message,
       html: `<p><strong>Name:</strong> ${name}</p>
+             <p><strong>Email:</strong> ${email}</p> 
              <p><strong>Phone:</strong> ${phone}</p>
              <p><strong>Comfortable Language(s):</strong> ${languages.join(",")}</p>
+             <p><strong>Topic:</strong> ${topic}</p>
              <p><strong>Message:</strong><br/>${message}</p>`,
     });
 
@@ -62,7 +65,7 @@ export async function POST(req: NextRequest) {
     });
     
   } catch (error: any) {
-    //console.error('Error in contact API:', error);
+    console.log('Error in contact API:', error);
     
     // Handle validation errors specifically
     if (error.name === 'ValidationError') {

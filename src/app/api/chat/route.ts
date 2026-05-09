@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
         });
         //console.log("here comes", formRes)
         if (formRes.ok) {
-          reply = `Thank you, ${formData.name}! ✅ Your details have been sent to Zainab. She'll reach out to you at ${formData.email} shortly to schedule your session. Take care! 💙`;
+          reply = `Thank you, ${formData.name}! ✅ Your details have been sent to Zainab. She'll reach out to you at ${formData.email}/${formData.phone} shortly to schedule your session. Take care! 💙`;
         } else {
           reply =
             "I collected your details but had trouble submitting. Please contact us directly — we're sorry for the inconvenience!";

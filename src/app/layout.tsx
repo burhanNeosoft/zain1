@@ -1,5 +1,8 @@
 import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import "./globals.css";
 import ThemeProvider from "./ThemeProvider";
 
@@ -19,6 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           {children}
         </ThemeProvider>
+        <Analytics/>
+        <SpeedInsights />
       </body>
     </html>
   );
